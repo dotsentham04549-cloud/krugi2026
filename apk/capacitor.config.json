@@ -1,0 +1,6 @@
+{
+  "appId": "ru.krugi.app",
+  "appName": "КРУГИ",
+  "webDir": "www",
+  "android": { "backgroundColor": "#090A09" }
+}
