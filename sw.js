@@ -1,5 +1,5 @@
 /* КРУГИ — служебный модуль. Правило одно: никогда не оставлять страницу без ответа. */
-var CACHE = 'krugi-14';
+var CACHE = 'krugi-15';
 var CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png',
   './fonts/commissioner-cyrillic-400-normal.woff2',
   './fonts/commissioner-cyrillic-500-normal.woff2',
@@ -31,7 +31,7 @@ self.addEventListener('install', function (e) {
 self.addEventListener('activate', function (e) {
   e.waitUntil(
     caches.keys().then(function (ks) {
-      return Promise.all(ks.map(function (k) { return k === CACHE ? null : caches.delete(k); }));
+      return Promise.all(ks.map(function (k) { return (k !== CACHE && /^krugi-/.test(k)) ? caches.delete(k) : null; }));  /* только свои кэши: на этом адресе живут и другие приложения */
     }).then(function () { return self.clients.claim(); })
   );
 });

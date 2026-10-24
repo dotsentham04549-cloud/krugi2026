@@ -1441,12 +1441,11 @@ $('#hard').addEventListener('click',function(){
   var b=this; b.textContent='Чищу…';
   var jobs=[];
   if('serviceWorker' in navigator){
-    jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs){
-      return Promise.all(rs.map(function(r){return r.unregister()}))}).catch(function(){}));
+    jobs.push(navigator.serviceWorker.getRegistration().then(function(r){return r?r.unregister():null}).catch(function(){}));  /* только своё приложение */
   }
   if(window.caches){
     jobs.push(caches.keys().then(function(ks){
-      return Promise.all(ks.map(function(k){return caches.delete(k)}))}).catch(function(){}));
+      return Promise.all(ks.filter(function(k){return /^krugi-/.test(k)}).map(function(k){return caches.delete(k)}))}).catch(function(){}));
   }
   Promise.all(jobs).then(function(){
     setTimeout(function(){location.replace(location.pathname+'?r='+Date.now())},250);
